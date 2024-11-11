@@ -8,11 +8,28 @@ import lombok.Data;
 
 @Data
 public class ZipCodeDto {
-    private long zipcode_id;
+
+    private long zipCodeId;
 
     @JsonProperty("code")
     @Pattern(regexp = "^\\d{5}(-\\d{4})?$", message = "Invalid zip code format")
     @NotBlank
     @NotNull
     private String code;
+
+   /* public long getZipCodeId() {
+        return zipCodeId;
+    }
+
+    public void setZipCodeId(long zipCodeId) {
+        this.zipCodeId = zipCodeId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }*/
 }
