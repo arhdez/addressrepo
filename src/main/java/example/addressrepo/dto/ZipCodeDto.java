@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ZipCodeDto {
 
-    private long zipCodeId;
+    private Long zipCodeId;
 
     @JsonProperty("code")
     @Pattern(regexp = "^\\d{5}(-\\d{4})?$", message = "Invalid zip code format")
