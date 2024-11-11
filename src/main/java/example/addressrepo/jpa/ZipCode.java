@@ -21,20 +21,4 @@ public class ZipCode {
 
     @Column
     private String code;
-
-    /*public Long getZipCodeId() {
-        return zipCodeId;
-    }
-
-    public void setZipCodeId(Long zipCodeId) {
-        this.zipCodeId = zipCodeId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }*/
 }

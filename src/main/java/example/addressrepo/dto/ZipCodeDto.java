@@ -16,20 +16,4 @@ public class ZipCodeDto {
     @NotBlank
     @NotNull
     private String code;
-
-   /* public long getZipCodeId() {
-        return zipCodeId;
-    }
-
-    public void setZipCodeId(long zipCodeId) {
-        this.zipCodeId = zipCodeId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }*/
 }
