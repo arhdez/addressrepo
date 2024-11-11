@@ -10,7 +10,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface ZipCodeMapper {
 
-    ZipCodeMapper INSTANCE = Mappers.getMapper( ZipCodeMapper.class );
 
     //@Mapping(source = "zipCodeId", target = "zipCodeId")
     ZipCodeDto zipCodeToZipCodeDto(ZipCode zipCode);
