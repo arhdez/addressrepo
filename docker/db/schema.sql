@@ -14,7 +14,7 @@ CREATE TABLE state (
 
 -- Step 4: Create the zipcode table
 CREATE TABLE zipcode (
-    zipcode_id SERIAL PRIMARY KEY,
+    zip_code_id SERIAL PRIMARY KEY,
     code VARCHAR(10) NOT NULL
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE address (
     zipcode_id INT NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(city_id),
     FOREIGN KEY (state_id) REFERENCES state(state_id),
-    FOREIGN KEY (zipcode_id) REFERENCES zipcode(zipcode_id)
+    FOREIGN KEY (zip_code_id) REFERENCES zipcode(zip_code_id)
 );
 
 -- Step 6: Add constraints and relationships between tables
