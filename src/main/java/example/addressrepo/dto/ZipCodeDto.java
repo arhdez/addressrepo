@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+
 @Data
 public class ZipCodeDto {
 
@@ -16,4 +17,5 @@ public class ZipCodeDto {
     @NotBlank
     @NotNull
     private String code;
+
 }

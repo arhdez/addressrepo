@@ -6,12 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Data
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long addressId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID addressId;
 
     private String street;
 

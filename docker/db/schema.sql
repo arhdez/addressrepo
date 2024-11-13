@@ -20,11 +20,12 @@ CREATE TABLE zipcode (
 
 -- Step 5: Create the address table
 CREATE TABLE address (
-    address_id SERIAL PRIMARY KEY,
+    --address_id SERIAL PRIMARY KEY,
+    address_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     street VARCHAR(255) NOT NULL,
     city_id INT NOT NULL,
     state_id INT NOT NULL,
-    zipcode_id INT NOT NULL,
+    zip_code_id INT NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(city_id),
     FOREIGN KEY (state_id) REFERENCES state(state_id),
     FOREIGN KEY (zip_code_id) REFERENCES zipcode(zip_code_id)

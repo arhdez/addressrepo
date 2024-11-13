@@ -34,4 +34,11 @@ public class GlobalExceptionHandler {
     public String handleDuplicateEmailException(DuplicateException ex){
         return ex.getMessage();
     }
+
+    @ExceptionHandler(DoesNotExistsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public String handleDuplicateEmailException(DoesNotExistsException ex){
+        return ex.getMessage();
+    }
 }
