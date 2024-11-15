@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/addressrepos")
+@RequestMapping("/addressrepos/zipcodes")
 @Import(SecurityConfig.class) //Import security bypass
 public class ZipCodeController {
     private final ZipCodeService zipCodeService;
