@@ -7,7 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.Optional;
 
 
-public interface ZipCodeRepository extends CrudRepository<ZipCode, Long>, PagingAndSortingRepository<ZipCode, Long> {
+public interface ZipCodeRepository extends CrudRepository<ZipCode, Integer>, PagingAndSortingRepository<ZipCode, Integer> {
     boolean existsByCode(String code);
 
      Optional<ZipCode> findByCode(String code);

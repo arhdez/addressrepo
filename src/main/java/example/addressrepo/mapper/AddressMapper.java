@@ -10,9 +10,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE, componentModel = "spring")
 public interface AddressMapper {
 
-    ZipCode addressDtoToAddress(AddressDto addressDto);
+    Address addressDtoToAddress(AddressDto addressDto);
 
-    ZipCodeDto addresstoAddressDto(Address address);
+    AddressDto addresstoAddressDto(Address address);
 
     void update(@MappingTarget Address existent, AddressDto updatedAddressDto);
 }

@@ -30,7 +30,7 @@ public class ZipCodeService {
         return zipCodeMapper.zipCodeToZipCodeDto(zipCodeRepository.save(zipCodeMapper.zipCodeDtoToZipCode(zipCodeDto)));
     }
 
-    public Optional<ZipCodeDto> updateZipCode(ZipCodeDto zipCodeDto, Long requestedId){
+    public Optional<ZipCodeDto> updateZipCode(ZipCodeDto zipCodeDto, Integer requestedId){
         Optional<ZipCode> existingZipCodeOptional = zipCodeRepository.findById(requestedId);
         if(zipCodeRepository.existsByCode(zipCodeDto.getCode())){
             throw new DuplicateException("Zip Code already exists: " + zipCodeDto.getCode());
@@ -50,7 +50,7 @@ public class ZipCodeService {
     }
     public void deleteZipCode(String code){
         if (zipCodeRepository.findByCode(code).isPresent()) {
-            Long requestedId = zipCodeRepository.findByCode(code).get().getZipCodeId();
+            Integer requestedId = zipCodeRepository.findByCode(code).get().getZipCodeId();
             zipCodeRepository.deleteById(requestedId);
         }
         else{ throw new DoesNotExistsException("Zip Code it does not exists: " + code); }

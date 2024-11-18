@@ -23,8 +23,5 @@ public class Address {
     private Integer cityId;
 
     @Column
-    private  Integer stateId;
-
-    @Column
     private Integer zipCodeId;
 }

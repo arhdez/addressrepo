@@ -11,12 +11,12 @@ public class AddressDto {
     @JsonProperty("address_id")
     private UUID addressId;
 
-    private String address;
+    private String street;
 
     @JsonProperty("city_id")
     private Integer cityId;
 
-    @JsonProperty("state_id")
-    private Integer stateId;
+    @JsonProperty("zip_code_id")
+    private Integer zipCodeId;
 
 }

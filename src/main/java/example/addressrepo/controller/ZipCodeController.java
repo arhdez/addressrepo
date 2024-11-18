@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/addressrepos/zipcodes")
+@RequestMapping("/addressrepo/zipcodes")
 @Import(SecurityConfig.class) //Import security bypass
 public class ZipCodeController {
     private final ZipCodeService zipCodeService;
@@ -26,7 +26,7 @@ public class ZipCodeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(zipCodeService.createZipCode(newZipCodeRequest));
     }
     @PutMapping("/{requestedId}")
-    public ResponseEntity<ZipCodeDto> updateZipCode(@PathVariable Long requestedId, @Validated @RequestBody ZipCodeDto updatedZipCode){
+    public ResponseEntity<ZipCodeDto> updateZipCode(@PathVariable Integer requestedId, @Validated @RequestBody ZipCodeDto updatedZipCode){
         Optional<ZipCodeDto> zipCodeDtoOptional = zipCodeService.updateZipCode(updatedZipCode, requestedId);
         return zipCodeDtoOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
