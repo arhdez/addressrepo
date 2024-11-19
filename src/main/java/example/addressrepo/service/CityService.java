@@ -18,7 +18,7 @@ public class CityService {
         return toDto(city);
     }*/
     public CityDto createCity(CityDto cityDto) {
-        if (cityRepository.existsByCityNameAndStateAbbreviation(cityDto.getCityName(), cityDto.getStateAbbreviation().name())) {
+        if (cityRepository.existsByCityNameAndStateAbbreviation(cityDto.getCityName(), cityDto.getStateAbbreviation())) {
             throw new DuplicateException("City already exists: " + cityDto.getCityName() + " in the state " +
                     cityDto.getStateAbbreviation().getStateDescription());
         }
