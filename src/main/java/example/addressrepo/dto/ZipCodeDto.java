@@ -18,4 +18,8 @@ public class ZipCodeDto {
     @NotNull
     private String code;
 
+    @JsonProperty("city_id")
+    @NotNull
+    private  Integer cityId;
+
 }

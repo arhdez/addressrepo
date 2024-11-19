@@ -15,7 +15,9 @@ CREATE TABLE city (
 -- Step 4: Create the zipcode table
 CREATE TABLE zipcode (
     zip_code_id SERIAL PRIMARY KEY,
-    code VARCHAR(10) NOT NULL
+    code VARCHAR(10) NOT NULL,
+    city_id INT NOT NULL,
+    FOREIGN KEY (city_id) REFERENCES city(city_id)
 );
 
 -- Step 5: Create the address table

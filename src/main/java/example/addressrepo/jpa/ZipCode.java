@@ -19,4 +19,7 @@ public class ZipCode {
 
     @Column
     private String code;
+
+    @Column
+    private Integer cityId;
 }

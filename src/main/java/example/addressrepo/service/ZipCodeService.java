@@ -3,6 +3,7 @@ package example.addressrepo.service;
 import example.addressrepo.dto.ZipCodeDto;
 import example.addressrepo.jpa.ZipCode;
 import example.addressrepo.mapper.ZipCodeMapper;
+import example.addressrepo.repository.CityRepository;
 import example.addressrepo.repository.ZipCodeRepository;
 import example.addressrepo.validation.DoesNotExistsException;
 import example.addressrepo.validation.DuplicateException;
@@ -20,12 +21,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ZipCodeService {
 
+    private final CityRepository cityRepository;
     private final ZipCodeRepository zipCodeRepository;
     private final ZipCodeMapper zipCodeMapper;
 
     public ZipCodeDto createZipCode(ZipCodeDto zipCodeDto) {
         if(zipCodeRepository.existsByCode(zipCodeMapper.zipCodeDtoToZipCode(zipCodeDto).getCode())){
             throw new DuplicateException("Zip Code already exists: " + zipCodeDto.getCode());
+        }
+        if(!cityRepository.existsById(zipCodeDto.getCityId())){
+            throw new DoesNotExistsException("City with Id: " + zipCodeDto.getCityId() + " does not exist");
         }
         return zipCodeMapper.zipCodeToZipCodeDto(zipCodeRepository.save(zipCodeMapper.zipCodeDtoToZipCode(zipCodeDto)));
     }
@@ -34,6 +39,9 @@ public class ZipCodeService {
         Optional<ZipCode> existingZipCodeOptional = zipCodeRepository.findById(requestedId);
         if(zipCodeRepository.existsByCode(zipCodeDto.getCode())){
             throw new DuplicateException("Zip Code already exists: " + zipCodeDto.getCode());
+        }
+        if(!cityRepository.existsById(zipCodeDto.getCityId())){
+            throw new DoesNotExistsException("City with Id: " + zipCodeDto.getCityId() + " does not exist");
         }
         if(existingZipCodeOptional.isPresent()){
             ZipCode existingZipCode = existingZipCodeOptional.get();

@@ -1,6 +1,7 @@
 package example.addressrepo.service;
 
 import example.addressrepo.dto.AddressDto;
+import example.addressrepo.jpa.Address;
 import example.addressrepo.jpa.ZipCode;
 import example.addressrepo.mapper.AddressMapper;
 import example.addressrepo.repository.AddressRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -53,6 +55,17 @@ public class AddressService {
               && addressAvailable(addressDto))
         return addressMapper.addresstoAddressDto(addressRepository.save(addressMapper.addressDtoToAddress(addressDto)));
       else throw new RuntimeException("Invalid address");
+    }
+
+    public Optional<AddressDto> updateAddress(AddressDto addressToUpdateDto, UUID requestedId){
+        Optional<Address> existentAddressOptional = addressRepository.findById(requestedId);
+
+        if(existentAddressOptional.isPresent()){
+            Address existentAddress = existentAddressOptional.get();
+            addressMapper.update(existentAddress, addressToUpdateDto);
+            return Optional.of(addressMapper.addresstoAddressDto(addressRepository.save(existentAddress)));
+        }
+        return Optional.empty();
     }
 
     public List<AddressDto> findAll(Pageable pageable){
