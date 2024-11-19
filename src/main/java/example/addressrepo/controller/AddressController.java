@@ -9,6 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/addressrepo/addresses")
@@ -25,5 +27,23 @@ public class AddressController {
     @GetMapping
     public ResponseEntity<List<AddressDto>> findAll(Pageable pageable){
         return ResponseEntity.ok(addressService.findAll(pageable));
+    }
+
+    @PutMapping("/{requestedId}")
+    public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID requestedId, @Validated @RequestBody AddressDto updatedAddress){
+        Optional<AddressDto> addressDtoOptional = addressService.updateAddress(updatedAddress, requestedId);
+        return addressDtoOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{requestedId}")
+    public ResponseEntity<AddressDto> patchAddress(@PathVariable UUID requestedId, @Validated @RequestBody AddressDto updatedAddress){
+        Optional<AddressDto> address = addressService.updateAddressByFields(requestedId, updatedAddress);
+        return address.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{requestedId}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable UUID requestedId){
+        addressService.deleteAddress(requestedId);
+        return ResponseEntity.noContent().build();
     }
 }

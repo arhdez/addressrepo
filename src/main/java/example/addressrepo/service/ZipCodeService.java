@@ -56,11 +56,11 @@ public class ZipCodeService {
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, "code")));
         return zipCodeRepository.findAll(pageRequest).stream().map(zipCodeMapper::zipCodeToZipCodeDto).collect(Collectors.toList());
     }
-    public void deleteZipCode(String code){
+    public void deleteZipCode(Integer zipCodeId) {zipCodeRepository.deleteById(zipCodeId);}
+    /*public void deleteZipCode(String code){
         if (zipCodeRepository.findByCode(code).isPresent()) {
             Integer requestedId = zipCodeRepository.findByCode(code).get().getZipCodeId();
             zipCodeRepository.deleteById(requestedId);
         }
-        else{ throw new DoesNotExistsException("Zip Code it does not exists: " + code); }
-    }
+    }*/
 }

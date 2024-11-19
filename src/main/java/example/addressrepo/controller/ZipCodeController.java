@@ -35,7 +35,7 @@ public class ZipCodeController {
         return ResponseEntity.ok(zipCodeService.findAll(pageable));
     }
     @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deleteZipCode(@PathVariable String code){
+    public ResponseEntity<Void> deleteZipCode(@PathVariable Integer code){
         zipCodeService.deleteZipCode(code);
         return ResponseEntity.noContent().build();
     }
