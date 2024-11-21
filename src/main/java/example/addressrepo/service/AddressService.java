@@ -40,10 +40,7 @@ public class AddressService {
     }
 
     public boolean addressAvailable(AddressDto addressDto) {
-        boolean availableStreet = addressRepository.existsByStreet(addressDto.getStreet());
-        boolean cityId = addressRepository.existsByCityId(addressDto.getCityId());
-        boolean zipCodeId = addressRepository.existsByZipCodeId(addressDto.getZipCodeId());
-        if (availableStreet && cityId && zipCodeId) {
+        if (addressRepository.existsByStreetAndCityIdAndZipCodeId(addressDto.getStreet(), addressDto.getCityId(), addressDto.getZipCodeId())) {
             throw new DuplicateException("The address already exists");
         }
         return true;
