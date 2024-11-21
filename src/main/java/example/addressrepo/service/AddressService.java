@@ -28,7 +28,7 @@ public class AddressService {
     private final AddressMapper addressMapper;
 
     public boolean validZipCode(Integer zipCodeId) {
-        if (zipCodeRepository.findById(zipCodeId).isPresent()) {
+        if (zipCodeRepository.existsById(zipCodeId)){
             return true;
         } else throw new DoesNotExistsException("Zip Code: " + zipCodeId + " does not exist");
     }
