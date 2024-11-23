@@ -10,4 +10,5 @@ public interface AddressRepository extends CrudRepository<Address, UUID>, Paging
     boolean existsByStreet(String street);
     boolean existsByCityId(Integer cityId);
     boolean existsByZipCodeId(Integer zipCodeId);
+    boolean existsByStreetAndCityIdAndZipCodeId(String street, Integer cityId, Integer ZipCodeId);
 }

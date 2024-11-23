@@ -1,7 +1,14 @@
 package example.addressrepo.jpa;
 
 import example.addressrepo.model.StateAbbreviation;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +27,7 @@ public class City {
     @Column(name = "city_name", nullable = false)
     private String cityName;
 
-    @Enumerated(EnumType.STRING) // Ensure this maps to the enum as a string in the DB
+    @Enumerated(EnumType.STRING)
     @Column(name = "state_abbreviation", nullable = false)
     private StateAbbreviation stateAbbreviation;
 }

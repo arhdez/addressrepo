@@ -28,7 +28,7 @@ public class AddressService {
     private final AddressMapper addressMapper;
 
     public boolean validZipCode(Integer zipCodeId) {
-        if (zipCodeRepository.findById(zipCodeId).isPresent()) {
+        if (zipCodeRepository.existsById(zipCodeId)){
             return true;
         } else throw new DoesNotExistsException("Zip Code: " + zipCodeId + " does not exist");
     }
@@ -40,10 +40,7 @@ public class AddressService {
     }
 
     public boolean addressAvailable(AddressDto addressDto) {
-        boolean availableStreet = addressRepository.existsByStreet(addressDto.getStreet());
-        boolean cityId = addressRepository.existsByCityId(addressDto.getCityId());
-        boolean zipCodeId = addressRepository.existsByZipCodeId(addressDto.getZipCodeId());
-        if (availableStreet && cityId && zipCodeId) {
+        if (addressRepository.existsByStreetAndCityIdAndZipCodeId(addressDto.getStreet(), addressDto.getCityId(), addressDto.getZipCodeId())) {
             throw new DuplicateException("The address already exists");
         }
         return true;

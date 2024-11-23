@@ -1,17 +1,9 @@
-CREATE TYPE state_abbreviation AS ENUM (
-    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-    'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
-);
 -- Step 2: Create the city table
 CREATE TABLE city (
     city_id SERIAL PRIMARY KEY,
     city_name VARCHAR(100) NOT NULL,
-    state_abbreviation state_abbreviation NOT NULL
+    state_abbreviation VARCHAR(2) NOT NULL
 );
-
 -- Step 4: Create the zipcode table
 CREATE TABLE zipcode (
     zip_code_id SERIAL PRIMARY KEY,
