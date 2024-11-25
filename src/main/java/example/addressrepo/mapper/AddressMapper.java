@@ -1,9 +1,7 @@
 package example.addressrepo.mapper;
 
 import example.addressrepo.dto.AddressDto;
-import example.addressrepo.dto.ZipCodeDto;
 import example.addressrepo.jpa.Address;
-import example.addressrepo.jpa.ZipCode;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
