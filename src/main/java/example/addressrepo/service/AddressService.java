@@ -27,31 +27,9 @@ public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
 
-    public boolean validZipCode(Integer zipCodeId) {
-        if (zipCodeRepository.existsById(zipCodeId)){
-            return true;
-        } else throw new DoesNotExistsException("Zip Code: " + zipCodeId + " does not exist");
-    }
-
-    public boolean validCity(Integer cityId) {
-        if (cityRepository.existsById(cityId)) {
-            return true;
-        } else throw new DoesNotExistsException("City with Id: " + cityId + " does not exist");
-    }
-
-    public boolean addressAvailable(AddressDto addressDto) {
-        if (addressRepository.existsByStreetAndCityIdAndZipCodeId(addressDto.getStreet(), addressDto.getCityId(), addressDto.getZipCodeId())) {
-            throw new DuplicateException("The address already exists");
-        }
-        return true;
-    }
-
     public AddressDto createAddress(AddressDto addressDto) {
-        if (validZipCode(addressDto.getZipCodeId())
-                && validCity(addressDto.getCityId())
-                && addressAvailable(addressDto))
-            return addressMapper.addresstoAddressDto(addressRepository.save(addressMapper.addressDtoToAddress(addressDto)));
-        else throw new RuntimeException("Invalid address");
+        validateAddress(addressDto);
+        return addressMapper.addresstoAddressDto(addressRepository.save(addressMapper.addressDtoToAddress(addressDto)));
     }
 
     public Optional<AddressDto> updateAddress(AddressDto addressToUpdateDto, UUID requestedId) {
@@ -60,28 +38,50 @@ public class AddressService {
         if (existentAddressOptional.isPresent()) {
             Address existentAddress = existentAddressOptional.get();
             addressMapper.update(existentAddress, addressToUpdateDto);
+            validateAddress(existentAddress);
             return Optional.of(addressMapper.addresstoAddressDto(addressRepository.save(existentAddress)));
         }
         return Optional.empty();
     }
 
-    public Optional<AddressDto> updateAddressByFields(UUID requestedId, AddressDto fieldsDto) {
-        Optional<Address> existingAddressOptional = addressRepository.findById(requestedId);
-        if (existingAddressOptional.isPresent()) {
-            Address existingAddress = existingAddressOptional.get();
-            addressMapper.update(existingAddress, fieldsDto);
-            return Optional.of(addressMapper.addresstoAddressDto(addressRepository.save(existingAddress)));
-        }
-        return Optional.empty();
-    }
-
     public List<AddressDto> findAll(Pageable pageable) {
-        PageRequest pageRequest =
-                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, "street")));
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, "street")));
         return addressRepository.findAll(pageRequest).stream().map(addressMapper::addresstoAddressDto).collect(Collectors.toList());
     }
 
     public void deleteAddress(UUID addressId) {
         addressRepository.deleteById(addressId);
+    }
+
+    private void validateAddress(AddressDto addressDto) {
+        validateAddress(addressDto.getStreet(), addressDto.getCityId(), addressDto.getZipCodeId());
+    }
+
+    private void validateAddress(Address address) {
+        validateAddress(address.getStreet(), address.getCityId(), address.getZipCodeId());
+    }
+
+    private void validateAddress(String street, Integer city, Integer zipCode) {
+        validateZipCode(zipCode);
+        validateCity(city);
+        validateAddressAvailability(street, city, zipCode);
+    }
+
+    private void validateZipCode(Integer zipCodeId) {
+        if (zipCodeId != null && !zipCodeRepository.existsById(zipCodeId)) {
+            throw new DoesNotExistsException("Zip Code: " + zipCodeId + " does not exist");
+        }
+    }
+
+    private void validateCity(Integer cityId) {
+        if (cityId != null && !cityRepository.existsById(cityId)) {
+            throw new DoesNotExistsException("City with Id: " + cityId + " does not exist");
+        }
+    }
+
+    private void validateAddressAvailability(String street, Integer cityId, Integer zipCodeId) {
+        if (addressRepository.existsByStreetAndCityIdAndZipCodeId(street, cityId, zipCodeId)) {
+            throw new DuplicateException("The address already exists");
+        }
     }
 }
