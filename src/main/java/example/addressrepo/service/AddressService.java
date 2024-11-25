@@ -50,9 +50,6 @@ public class AddressService {
     }
 
     public void deleteAddress(UUID addressId) {
-        if (!addressRepository.existsById(addressId)) {
-            throw new DoesNotExistsException("Address with Id: " + addressId + " does not exist");
-        }
         addressRepository.deleteById(addressId);
     }
 
