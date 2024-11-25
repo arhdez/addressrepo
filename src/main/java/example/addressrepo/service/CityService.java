@@ -3,6 +3,7 @@ package example.addressrepo.service;
 import example.addressrepo.dto.CityDto;
 import example.addressrepo.jpa.City;
 import example.addressrepo.mapper.CityMapper;
+import example.addressrepo.model.StateAbbreviation;
 import example.addressrepo.repository.CityRepository;
 import example.addressrepo.validation.DoesNotExistsException;
 import example.addressrepo.validation.DuplicateException;
@@ -38,7 +39,7 @@ public class CityService {
         if (existentCityOptional.isPresent()){
             City existingCity = existentCityOptional.get();
             cityMapper.update(existingCity, cityToUpdateDto);
-            cityExists(cityToUpdateDto);
+            cityExists(existingCity);
             return Optional.of(cityMapper.cityToCityDto(cityRepository.save(existingCity)));
         }
         return Optional.empty();
@@ -51,10 +52,16 @@ public class CityService {
         cityRepository.deleteById(id);
     }
 
-    private void cityExists(CityDto cityDto) {
-        if (cityRepository.existsByCityNameAndStateAbbreviation(cityDto.getCityName(), cityDto.getStateAbbreviation())) {
-            throw new DuplicateException("City already exists: " + cityDto.getCityName() + " in the state " +
-                    cityDto.getStateAbbreviation().getStateDescription());
+    private void cityExists(City city){
+        cityExists(city.getCityName(), city.getStateAbbreviation());
+    }
+    private void cityExists(CityDto cityDto){
+        cityExists(cityDto.getCityName(), cityDto.getStateAbbreviation());
+    }
+    private void cityExists(String cityName, StateAbbreviation stateAbbreviation) {
+        if (cityRepository.existsByCityNameAndStateAbbreviation(cityName, stateAbbreviation)) {
+            throw new DuplicateException("City already exists: " + cityName + " in the state " +
+                    stateAbbreviation.getStateDescription());
         }
     }
 
