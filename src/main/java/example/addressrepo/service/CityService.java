@@ -1,8 +1,10 @@
 package example.addressrepo.service;
 
 import example.addressrepo.dto.CityDto;
+import example.addressrepo.jpa.City;
 import example.addressrepo.mapper.CityMapper;
 import example.addressrepo.repository.CityRepository;
+import example.addressrepo.validation.DoesNotExistsException;
 import example.addressrepo.validation.DuplicateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,10 +23,7 @@ public class CityService {
     private final CityMapper cityMapper;
 
     public CityDto createCity(CityDto cityDto) {
-        if (cityRepository.existsByCityNameAndStateAbbreviation(cityDto.getCityName(), cityDto.getStateAbbreviation())) {
-            throw new DuplicateException("City already exists: " + cityDto.getCityName() + " in the state " +
-                    cityDto.getStateAbbreviation().getStateDescription());
-        }
+        cityExists(cityDto);
         return cityMapper.cityToCityDto(cityRepository.save(cityMapper.cityDtoToCity(cityDto)));
     }
 
@@ -31,4 +31,31 @@ public class CityService {
         PageRequest pageRequest= PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, "cityName")));
         return cityRepository.findAll(pageRequest).stream().map(cityMapper::cityToCityDto).collect(Collectors.toList());
     }
+
+    public Optional<CityDto> updateCity(CityDto cityToUpdateDto, Integer requestedId){
+        Optional<City> existentCityOptional = cityRepository.findById(requestedId);
+
+        if (existentCityOptional.isPresent()){
+            City existingCity = existentCityOptional.get();
+            cityMapper.update(existingCity, cityToUpdateDto);
+            cityExists(cityToUpdateDto);
+            return Optional.of(cityMapper.cityToCityDto(cityRepository.save(existingCity)));
+        }
+        return Optional.empty();
+    }
+
+    public void deleteCity(Integer id){
+        if (!cityRepository.existsById(id)){
+            throw new DoesNotExistsException("City with id: "+ id + " not found");
+        }
+        cityRepository.deleteById(id);
+    }
+
+    private void cityExists(CityDto cityDto) {
+        if (cityRepository.existsByCityNameAndStateAbbreviation(cityDto.getCityName(), cityDto.getStateAbbreviation())) {
+            throw new DuplicateException("City already exists: " + cityDto.getCityName() + " in the state " +
+                    cityDto.getStateAbbreviation().getStateDescription());
+        }
+    }
+
 }

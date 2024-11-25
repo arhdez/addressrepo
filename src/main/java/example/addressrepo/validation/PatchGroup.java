@@ -1,4 +1,4 @@
 package example.addressrepo.validation;
 
-public interface PatchGrooup {
+public interface PatchGroup {
 }

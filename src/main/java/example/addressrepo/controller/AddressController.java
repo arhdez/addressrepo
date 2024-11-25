@@ -3,7 +3,7 @@ package example.addressrepo.controller;
 import example.addressrepo.dto.AddressDto;
 import example.addressrepo.service.AddressService;
 import example.addressrepo.validation.CreateGroup;
-import example.addressrepo.validation.PatchGrooup;
+import example.addressrepo.validation.PatchGroup;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class AddressController {
     }
 
     @PatchMapping("/{requestedId}")
-    public ResponseEntity<AddressDto> patchAddress(@PathVariable UUID requestedId, @Validated(PatchGrooup.class) @RequestBody AddressDto updatedAddress) {
+    public ResponseEntity<AddressDto> patchAddress(@PathVariable UUID requestedId, @Validated(PatchGroup.class) @RequestBody AddressDto updatedAddress) {
         Optional<AddressDto> address = addressService.updateAddress(updatedAddress, requestedId);
         return address.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }

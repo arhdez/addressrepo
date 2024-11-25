@@ -19,7 +19,6 @@ public class CityDto {
 
     //@Pattern(regexp = "^[A-Z]{2}$", message = "State abbreviation must be exactly 2 uppercase letters")
     @JsonProperty("state_abbreviation")
-    @NotBlank(groups = CreateGroup.class)
     @NotNull(groups = CreateGroup.class)
     private StateAbbreviation stateAbbreviation;
 }
