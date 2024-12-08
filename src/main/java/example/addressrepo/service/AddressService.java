@@ -26,10 +26,16 @@ public class AddressService {
     private final CityRepository cityRepository;
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final KafkaProducerService kafkaProducerService;
 
     public AddressDto createAddress(AddressDto addressDto) {
         validateAddress(addressDto);
-        return addressMapper.addresstoAddressDto(addressRepository.save(addressMapper.addressDtoToAddress(addressDto)));
+
+        Address savedAddress = addressRepository.save(addressMapper.addressDtoToAddress(addressDto));
+        AddressDto createdAddressDto = addressMapper.addresstoAddressDto(savedAddress);
+
+        kafkaProducerService.sendMessage(createdAddressDto);
+        return createdAddressDto;
     }
 
     public Optional<AddressDto> updateAddress(AddressDto addressToUpdateDto, UUID requestedId) {
@@ -39,10 +45,16 @@ public class AddressService {
             Address existentAddress = existentAddressOptional.get();
             addressMapper.update(existentAddress, addressToUpdateDto);
             validateAddress(existentAddress);
-            return Optional.of(addressMapper.addresstoAddressDto(addressRepository.save(existentAddress)));
+
+            Address savedAddress = addressRepository.save(existentAddress);
+            AddressDto updatedAddressDto = addressMapper.addresstoAddressDto(savedAddress);
+            // Send updated address to Kafka
+            kafkaProducerService.sendMessage(updatedAddressDto);
+            return Optional.of(updatedAddressDto);
         }
         return Optional.empty();
     }
+
 
     public List<AddressDto> findAll(Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, "street")));

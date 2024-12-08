@@ -62,13 +62,4 @@ public enum StateAbbreviation {
     public String getStateDescription() {
         return stateDescription;
     }
-
-    /*public static StateAbbreviation fromAbbreviation(String abbreviation) {
-        for (StateAbbreviation state : StateAbbreviation.values()) {
-            if (state.name().equals(abbreviation)) {
-                return state;
-            }
-        }
-        throw new IllegalArgumentException("Unknown state abbreviation: " + abbreviation);
-    }*/
 }
